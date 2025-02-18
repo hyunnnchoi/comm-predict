@@ -9,19 +9,13 @@ from sklearn.preprocessing import StandardScaler
 
 
 class CommDataset(Dataset):
-    def __init__(self, csv_path='../data/arps_a100_8gpu_network_summary.csv'):
+    def __init__(self, csv_path='../data/cnn_network_summary.csv'):
+        
         df = pd.read_csv(csv_path)
 
         # [2] Problem: 입력 데이터 오류 가능성, Answer: 검증 cout 추가
         print("데이터 통계:", df.describe())
         print("NaN 값 확인:", df.isna().sum())
-
-
-        # [1] Solution: tensorsize, bandwidth 클 수 있어서 avg 0, variance 1로 정규화
-        scaler = StandardScaler()
-        self.features = scaler.fit_transform(self.features)
-        self.comm_volume = scaler.fit_transform(self.comm_volume)
-
 
         self.model_names = df['Model']
         self.tensorsize = df['tensorsize']
@@ -36,9 +30,15 @@ class CommDataset(Dataset):
             self.tensorsize, # Problem [1] 여기서 tensorsize가 매우 클 수 있음. 정규화 필요?
             self.num_workers
         ))
+ # [1] Solution: tensorsize, bandwidth 클 수 있어서 avg 0, variance 1로 정규화
+        self.scaler_features = StandardScaler()
+        self.scaler_target = StandardScaler()
+
+        self.features = self.scaler_features.fit_transform(self.features)
+        self.comm_volume = self.scaler_target.fit_transform(self.comm_volume.reshape(-1, 1))
 
         self.features = torch.FloatTensor(self.features)
-        self.comm_volume = torch.FloatTensor(self.comm_volume.values).reshape(-1, 1)
+        self.comm_volume = torch.FloatTensor(self.comm_volume)
 
     def __len__(self):
         return len(self.features)
