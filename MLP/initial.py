@@ -5,10 +5,23 @@ from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 import numpy as np
+from sklearn.preprocessing import StandardScaler
+
 
 class CommDataset(Dataset):
     def __init__(self, csv_path='../data/arps_a100_8gpu_network_summary.csv'):
         df = pd.read_csv(csv_path)
+
+        # [2] Problem: 입력 데이터 오류 가능성, Answer: 검증 cout 추가
+        print("데이터 통계:", df.describe())
+        print("NaN 값 확인:", df.isna().sum())
+
+
+        # [1] Solution: tensorsize, bandwidth 클 수 있어서 avg 0, variance 1로 정규화
+        scaler = StandardScaler()
+        self.features = scaler.fit_transform(self.features)
+        self.comm_volume = scaler.fit_transform(self.comm_volume)
+
 
         self.model_names = df['Model']
         self.tensorsize = df['tensorsize']
@@ -20,7 +33,7 @@ class CommDataset(Dataset):
 
         self.features = np.column_stack((
             self.model_encoded,
-            self.tensorsize,
+            self.tensorsize, # Problem [1] 여기서 tensorsize가 매우 클 수 있음. 정규화 필요?
             self.num_workers
         ))
 
@@ -59,6 +72,10 @@ def train(model, train_loader, criterion, optimizer, device):
         loss = criterion(outputs, labels)
 
         loss.backward()
+
+        # [3] Gradient clipping 추가, 파라미터 업데이터 큰 값 튈 수 있음 -> 업데이트 크기 upper bound 설정
+        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+
         optimizer.step()
 
         total_loss += loss.item()
@@ -70,12 +87,12 @@ def main():
     print(f"Using device: {device}")
 
     dataset = CommDataset()
-    train_loader = DataLoader(dataset, batch_size=4, shuffle=True)
+    train_loader = DataLoader(dataset, batch_size=2, shuffle=True)
 
     model = CommunicationPredictor().to(device)
 
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(model.parameters(), lr=0.0001) # [4] lr 0.01 -> 0.0001
 
     num_epochs = 500
     for epoch in range(num_epochs):
