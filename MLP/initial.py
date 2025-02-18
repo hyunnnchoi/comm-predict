@@ -10,7 +10,7 @@ from sklearn.preprocessing import StandardScaler
 
 class CommDataset(Dataset):
     def __init__(self, csv_path='../data/cnn_network_summary.csv'):
-        
+
         df = pd.read_csv(csv_path)
 
         # [2] Problem: 입력 데이터 오류 가능성, Answer: 검증 cout 추가
@@ -35,7 +35,7 @@ class CommDataset(Dataset):
         self.scaler_target = StandardScaler()
 
         self.features = self.scaler_features.fit_transform(self.features)
-        self.comm_volume = self.scaler_target.fit_transform(self.comm_volume.reshape(-1, 1))
+        self.comm_volume = self.scaler_target.fit_transform(self.comm_volume.values.reshape(-1, 1))
 
         self.features = torch.FloatTensor(self.features)
         self.comm_volume = torch.FloatTensor(self.comm_volume)
