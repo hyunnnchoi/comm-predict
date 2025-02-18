@@ -7,7 +7,7 @@ from sklearn.preprocessing import LabelEncoder
 import numpy as np
 
 class CommDataset(Dataset):
-    def __init__(self, csv_path='data/arps_a100_8gpu_network_summary.csv'):
+    def __init__(self, csv_path='../data/arps_a100_8gpu_network_summary.csv'):
         df = pd.read_csv(csv_path)
 
         self.model_names = df['Model']
