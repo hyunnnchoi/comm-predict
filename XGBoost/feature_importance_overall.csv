@@ -1,0 +1,9 @@
+Feature,Importance
+tensor_size,0.31668586
+num_parameters,0.25296506
+num_workers,0.15841933
+batch_size,0.13448413
+is_allreduce,0.04936118
+num_ps,0.035907924
+model_depth,0.035813812
+num_layers,0.01636274

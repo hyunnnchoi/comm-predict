@@ -1,0 +1,4 @@
+model,dataset,tensorsize,batch_size,workers,ps,predicted,actual,error_pct
+bert,squad,1560.0,8,2,0,1349.8322,1314.7219,2.6705441
+bert,squad,1560.0,16,4,0,1890.2332,2542.6924,25.660172
+bert,squad,1560.0,32,8,0,2642.414,4474.3022,40.942432

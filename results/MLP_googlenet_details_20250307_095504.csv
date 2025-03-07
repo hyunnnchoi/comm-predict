@@ -1,0 +1,7 @@
+model,dataset,tensorsize,batch_size,workers,ps,predicted,actual,error_pct
+googlenet,imagenet,26.7,512,2,0,1852.0461,644.00824,187.58112
+googlenet,imagenet,26.7,1024,4,0,3017.0938,1488.279,102.723656
+googlenet,imagenet,26.7,2048,8,0,4002.3418,2606.7805,53.53582
+googlenet,imagenet,26.7,512,2,2,1888.6042,798.3838,136.55344
+googlenet,imagenet,26.7,1024,4,4,1924.6564,1084.3967,77.48637
+googlenet,imagenet,26.7,2048,8,8,1994.0367,2525.08,21.030752

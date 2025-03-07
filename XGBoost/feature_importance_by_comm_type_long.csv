@@ -1,0 +1,17 @@
+Feature,Importance,CommType
+tensor_size,0.32283822,AR
+num_parameters,0.2815603,AR
+num_workers,0.20703699,AR
+batch_size,0.108911425,AR
+model_depth,0.063777745,AR
+num_layers,0.015875401,AR
+num_ps,0.0,AR
+is_allreduce,0.0,AR
+tensor_size,0.38089222,PS
+num_parameters,0.23287994,PS
+batch_size,0.15045722,PS
+num_ps,0.11993511,PS
+num_workers,0.08178207,PS
+model_depth,0.030949617,PS
+num_layers,0.0031037908,PS
+is_allreduce,0.0,PS

@@ -1,0 +1,1 @@
+["tensor_size", "num_workers", "batch_size", "num_ps", "is_ring_allreduce", "ring_volume", "ring_steps", "ps_volume", "ps_worker_ratio", "num_parameters", "num_layers", "comm_intensity", "log_tensor_size", "log_batch_size", "log_workers", "dataset_size", "pattern_allreduce", "pattern_parameterserver"]

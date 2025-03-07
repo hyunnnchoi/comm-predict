@@ -141,3 +141,63 @@ for left_out_model in unique_models:
 results_df = pd.DataFrame(results)
 print("\n===== Leave-One-Model-Out Evaluation Summary =====")
 print(results_df)
+
+
+'''
+이 코드에서 사용되는 모든 특성(Feature)을 분석해보겠습니다. create_features 함수에서 생성하는 특성들과 그 계산 방식을 순서대로 정리하겠습니다:
+기본 특성 (Raw Features)
+
+tensor_size: 텐서 크기 (원본 데이터의 'tensorsize' 컬럼)
+num_workers: 워커 수 (원본 데이터의 'Number of Workers' 컬럼)
+batch_size: 배치 크기 (원본 데이터의 'Batch Size' 컬럼)
+num_ps: 파라미터 서버 수 (원본 데이터의 'Number of PSs' 컬럼)
+
+통신 패턴 관련 특성
+
+is_ring_allreduce: Ring AllReduce 방식 사용 여부 (파라미터 서버가 0개이면 1, 아니면 0)
+ring_volume: Ring AllReduce 방식에서의 통신량 (= tensor_size * 2 * (N-1) / N * is_ring_allreduce)
+ring_steps: Ring AllReduce 방식에서의 통신 단계 수 (= 2 * (N-1) * is_ring_allreduce)
+ring_bandwidth_per_step: 단계당 대역폭 (= ring_volume / ring_steps)
+ps_volume: 파라미터 서버 방식에서의 통신량 (= tensor_size * N * 2 * ps_mask)
+ps_worker_ratio: 워커 대 PS 비율 (= N / num_ps * ps_mask)
+
+모델 구조 관련 특성 (사전 정의된 model_architecture_features 사용)
+
+model_depth: 모델의 깊이
+sequential_ratio: 순차적 연산 비율
+branch_factor: 분기 요소
+param_density: 파라미터 밀도
+
+추가 모델 관련 특성
+
+num_parameters: 파라미터 수 (원본 데이터의 'Number of Parameters' 컬럼)
+num_layers: 레이어 수 (원본 데이터의 'Number of Layers' 컬럼)
+
+계산 및 통신 강도 특성
+
+compute_intensity: 계산 강도 (= param_density * tensor_size)
+comm_intensity: 통신 강도 (= tensor_size * N / batch_size)
+
+특성 상호작용
+
+ring_worker_interaction: Ring 방식에서의 워커 상호작용 (= ring_volume * log2(N))
+ps_worker_interaction: PS 방식에서의 워커 상호작용 (= ps_volume * ps_worker_ratio)
+
+로그 변환 특성
+
+log_tensor_size: 텐서 크기의 로그 변환 (= log1p(tensorsize))
+log_batch_size: 배치 크기의 로그 변환 (= log(batch_size))
+log_workers: 워커 수의 로그 변환 (= log2(N))
+
+데이터셋 관련 특성
+
+dataset_size: 데이터셋 크기 (cifar10=1, imagenet=10, squad=5로 매핑)
+
+범주형 특성 (원-핫 인코딩)
+
+pattern_*: 통신 패턴을 나타내는 원-핫 인코딩 변수들 (원본 데이터의 'Pattern' 컬럼에서 생성)
+
+이 특성들은 XGBoost 모델의 입력으로 사용되며, 분산 학습 시스템의 통신 성능(Sum of Max TX+RX (MB/s))을 예측하는 데 활용됩니다. 특성들은 통신 패턴, 모델 구조, 시스템 구성 등 다양한 측면을 고려하여 설계되었습니다.
+
+
+'''

@@ -1,0 +1,7 @@
+model,dataset,tensorsize,batch_size,workers,ps,predicted,actual,error_pct
+resnet50,imagenet,97.5,256,2,0,1191.4991,1415.3405,15.815369
+resnet50,imagenet,97.5,512,4,0,2160.3242,4200.32,48.567627
+resnet50,imagenet,97.5,1024,8,0,3379.5427,7267.1865,53.49586
+resnet50,imagenet,97.5,256,2,2,1203.2241,2158.3772,44.2533
+resnet50,imagenet,97.5,512,4,4,1973.4556,3529.8281,44.092022
+resnet50,imagenet,97.5,1024,8,8,3031.2417,6216.6216,51.23973

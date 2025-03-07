@@ -1,0 +1,7 @@
+model,dataset,tensorsize,batch_size,workers,ps,predicted,actual,error_pct
+inception3,imagenet,90.9,128,2,0,1211.0132,1864.7614,35.058006
+inception3,imagenet,90.9,256,4,0,2331.5667,4390.2627,46.892323
+inception3,imagenet,90.9,512,8,0,3562.0847,6359.0864,43.984333
+inception3,imagenet,90.9,128,2,2,1396.4434,1728.7041,19.22022
+inception3,imagenet,90.9,256,4,4,1704.1261,3147.8376,45.863594
+inception3,imagenet,90.9,512,8,8,2407.5642,5076.642,52.575653

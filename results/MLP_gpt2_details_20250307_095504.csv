@@ -1,0 +1,4 @@
+model,dataset,tensorsize,batch_size,workers,ps,predicted,actual,error_pct
+gpt2,squad,4000.0,8,2,0,1464.0459,1856.9152,21.157093
+gpt2,squad,4000.0,16,4,0,2322.5237,2835.7197,18.097559
+gpt2,squad,4000.0,32,8,0,5126.1245,4848.799,5.719472
